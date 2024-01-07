@@ -49,7 +49,7 @@ export const scrapper = async (set: string) => {
     )
   );
 
-  console.log(cards)
-
   await browser.close();
+
+  return cards;
 };

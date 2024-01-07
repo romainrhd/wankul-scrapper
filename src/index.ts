@@ -12,7 +12,9 @@ async function main(): Promise<void> {
       choices
     });
 
-    await scrapper(slugify(answer, {lower: true}));
+    const cards: Array<Card> = await scrapper(slugify(answer, {lower: true}));
+
+    // TODO : Send to API of Wankul Builder App
   } catch (error) {
     console.error('An error occurred:', error);
   }
