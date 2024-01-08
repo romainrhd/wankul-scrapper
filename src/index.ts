@@ -1,6 +1,6 @@
 import slugify from "slugify";
 import { Choice } from "./types";
-import {scrapper} from "./scapper";
+import {scrapper} from "./scrapper";
 import select from "@inquirer/select";
 
 async function main(): Promise<void> {
