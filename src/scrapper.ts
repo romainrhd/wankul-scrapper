@@ -25,11 +25,12 @@ export const scrapper = async (set: string) => {
         const infoElement: Maybe<HTMLElement> = element.querySelector('.rank__result-cell-infos');
         const nameElement: Maybe<HTMLElement> | undefined = infoElement?.querySelector('.rank__result-name');
         const posElement: Maybe<HTMLElement> | undefined = infoElement?.querySelector('.rank__result-pos');
-        const imgElement: Maybe<HTMLImageElement> = element.querySelector('.rank__result-img');
+        const imgElement: Maybe<HTMLImageElement> | undefined = element.querySelector('.rank__result-img')?.querySelector('#imgIMG');
 
         let id: number | undefined;
         let name: string | undefined;
         let image: string | undefined;
+        let land: boolean | undefined;
 
         if(nameElement?.innerText.includes("#")) {
           id = Number(nameElement.innerText.split("#")[1]);
@@ -44,7 +45,11 @@ export const scrapper = async (set: string) => {
           image = imgElement.src;
         }
 
-        return { id, name, image }
+        if(element) {
+          land = element.className.includes('Terrain');
+        }
+
+        return { id, name, image, land }
       }
     )
   );
