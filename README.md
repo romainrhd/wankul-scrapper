@@ -1,8 +1,9 @@
 # Wankul scrapper
+
 ## Technologies
 - Typescript
 - Puppeteer
 - Inquirer
-- Slugify
+
 ## About
-This is a web scrapper to get all informations of wankul card.
+This is a web scrapper to get all card information for the TCG Wankul.

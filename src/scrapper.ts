@@ -19,39 +19,43 @@ export const scrapper = async (set: string) => {
   }
 
   const cards: Array<Card> = await page.evaluate(
-    () => Array.from(
-      document.querySelectorAll('.rank__result-cell'),
-      element => {
-        const infoElement: Maybe<HTMLElement> = element.querySelector('.rank__result-cell-infos');
-        const nameElement: Maybe<HTMLElement> | undefined = infoElement?.querySelector('.rank__result-name');
-        const posElement: Maybe<HTMLElement> | undefined = infoElement?.querySelector('.rank__result-pos');
-        const imgElement: Maybe<HTMLImageElement> | undefined = element.querySelector('.rank__result-img')?.querySelector('#imgIMG');
+    () => {
+      const elements = document.querySelectorAll('.rank__result-cell');
 
-        let id: number | undefined;
-        let name: string | undefined;
-        let image: string | undefined;
-        let land: boolean | undefined;
+      const cardsArray = Array.from(elements, (element, index) => {
+          const infoElement: Maybe<HTMLElement> = element.querySelector('.rank__result-cell-infos');
+          const nameElement: Maybe<HTMLElement> | undefined = infoElement?.querySelector('.rank__result-name');
+          const posElement: Maybe<HTMLElement> | undefined = infoElement?.querySelector('.rank__result-pos');
+          const imgElement: Maybe<HTMLImageElement> | undefined = element.querySelector('.rank__result-img')?.querySelector('#imgIMG');
 
-        if(nameElement?.innerText.includes("#")) {
-          id = Number(nameElement.innerText.split("#")[1]);
+          let number: number | undefined;
+          let name: string | undefined;
+          let image: string | undefined;
+          let land: boolean | undefined;
+
+          if(nameElement?.innerText.includes("#")) {
+            number = Number(nameElement.innerText.split("#")[1]);
+          }
+
+          if(posElement) {
+            name = posElement.innerText.charAt(0).toUpperCase()
+              + posElement.innerText.slice(1).toLowerCase();
+          }
+
+          if(imgElement) {
+            image = imgElement.src;
+          }
+
+          if(element) {
+            land = element.className.includes('Terrain');
+          }
+
+          return { number, name, image, land }
         }
+      );
 
-        if(posElement) {
-          name = posElement.innerText.charAt(0).toUpperCase()
-            + posElement.innerText.slice(1).toLowerCase();
-        }
-
-        if(imgElement) {
-          image = imgElement.src;
-        }
-
-        if(element) {
-          land = element.className.includes('Terrain');
-        }
-
-        return { id, name, image, land }
-      }
-    )
+      return cardsArray;
+    }
   );
 
   await browser.close();

@@ -1,5 +1,5 @@
 type Card = {
-  id?: number;
+  number?: number;
   name?: string;
   image?: string;
 };
